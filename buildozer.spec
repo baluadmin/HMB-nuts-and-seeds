@@ -9,29 +9,30 @@ package.name = hmbnuts
 # (str) Package domain (needed for android packaging)
 package.domain = org.hmb
 
-# (list) Source files to include (let it include python and data files)
+# (str) Source directory where the main file resides
+source.dir = .
+
+# (list) Source files to include
 source.include_exts = py,png,jpg,kv,atlas,csv
 
-# (list) Application requirements
-# Note: python3, kivy, pandas, and requests are essential for your app logic
-requirements = python3,kivy,pandas,requests,urllib3,certifi,idna,charset_normalizer,idna
+# (str) Application versioning
+version = 1.0
 
-# (str) Supported orientations (portrait keeps mobile layout clean)
+# (list) Application requirements
+requirements = python3,kivy,pandas,requests,urllib3,certifi,idna,charset_normalizer
+
+# (str) Supported orientations
 orientation = portrait
 
 # (list) Permissions
 android.permissions = INTERNET
 
-# (int) Target Android API, should be as high as possible.
+# (int) Target Android API
 android.api = 33
 
 # (int) Minimum API your APK will support
 android.minapi = 21
 
 [buildozer]
-
-# (int) Log level (0 = error only, 1 = info, 2 = debug)
 log_level = 2
-
-# (int) Display warning if buildozer is run as root (0 = False, 1 = True)
 warn_root = 1
