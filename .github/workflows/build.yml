@@ -26,7 +26,6 @@ jobs:
             git \
             python3-dev \
             ccache \
-            libncursesw5 \
             libffi-dev \
             libssl-dev \
             libltdl-dev \
