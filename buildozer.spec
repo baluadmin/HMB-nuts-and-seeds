@@ -1,5 +1,4 @@
 [app]
-
 title = HMB Nuts & Spices
 package.name = hmbnuts
 package.domain = org.hmb
@@ -9,14 +8,12 @@ version = 1.0
 requirements = python3,kivy,pandas,requests,urllib3,certifi,idna,charset_normalizer
 orientation = portrait
 android.permissions = INTERNET
-
-# (int) Target Android API
 android.api = 31
-
-# (int) Minimum API your APK will support
 android.minapi = 21
 
-# (bool) Automatically accept SDK licenses
+# (str) Use a stable, compatible Android NDK version
+android.ndk_version = 25b
+
 android.accept_sdk_license = True
 
 [buildozer]
