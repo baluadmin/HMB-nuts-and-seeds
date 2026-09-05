@@ -15,10 +15,10 @@ import urllib.parse
 class HMBNutsApp(App):
 
     def build(self):
-        self.title = "HMB Nuts & Spices"[cite: 2]
+        self.title = "HMB Nuts & Spices"
         self.cart = []
         self.search_query = ""
-        self.current_view = "Shop"[cite: 2]
+        self.current_view = "Shop"
 
         self.load_products()
 
@@ -46,7 +46,7 @@ class HMBNutsApp(App):
         self.bg_rect.pos = instance.pos
 
     def load_products(self):
-        csv_url = "https://docs.google.com/spreadsheets/d/1b_oAav63v5OVFxJBKOBbCxyW3cVcXu2J6zJCzQUxkCc/export?format=csv&gid=0"[cite: 2]
+        csv_url = "https://docs.google.com/spreadsheets/d/1b_oAav63v5OVFxJBKOBbCxyW3cVcXu2J6zJCzQUxkCc/export?format=csv&gid=0"
         try:
             response = urllib.request.urlopen(csv_url)
             lines = [
@@ -68,7 +68,9 @@ class HMBNutsApp(App):
                         "stock": row[3].strip(),
                         "price": row[4].strip(),
                         "description": (
-                            row[5].strip() if len(row) > 5 and row[5].strip() else "1 Pack"[cite: 2]
+                            row[5].strip()
+                            if len(row) > 5 and row[5].strip()
+                            else "1 Pack"
                         ),
                     })
         except Exception:
@@ -97,7 +99,7 @@ class HMBNutsApp(App):
                     "category": "Seeds",
                     "description": "250g",
                 },
-            ][cite: 2]
+            ]
 
     def get_cart_qty(self, prod_name):
         for item in self.cart:
@@ -112,7 +114,7 @@ class HMBNutsApp(App):
         search_layout = BoxLayout(size_hint_y=None, height=dp(40), spacing=dp(4))
         search_input = TextInput(
             text=self.search_query,
-            hint_text="🔍 Search dry fruits, nuts, seeds...",[cite: 2]
+            hint_text="🔍 Search dry fruits, nuts, seeds...",
             multiline=False,
             size_hint_x=0.8,
         )
@@ -407,9 +409,9 @@ class HMBNutsApp(App):
             cart_summary = ", ".join([
                 f"{i.get('quantity')} of {i.get('product')}" for i in self.cart
             ])
-            wa_message = f"*New Order - HMB Nuts & Seeds*\n\n*Items:* {cart_summary}\n*Address:* {addr}\n*Contact:* {contact}"[cite: 2]
+            wa_message = f"*New Order - HMB Nuts & Seeds*\n\n*Items:* {cart_summary}\n*Address:* {addr}\n*Contact:* {contact}"
             encoded_message = urllib.parse.quote(wa_message)
-            wa_link = f"https://api.whatsapp.com/send?phone=919840450113&text={encoded_message}"[cite: 2]
+            wa_link = f"https://api.whatsapp.com/send?phone=919840450113&text={encoded_message}"
             import webbrowser
 
             webbrowser.open(wa_link)
@@ -418,4 +420,4 @@ class HMBNutsApp(App):
 
 
 if __name__ == "__main__":
-    HMBNutsApp().run()[cite: 2]
+    HMBNutsApp().run()
