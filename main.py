@@ -11,51 +11,51 @@ import pandas as pd
 import urllib.parse
 
 
-class HMBNutsApp(App):[cite: 2]
+class HMBNutsApp(App):
 
-    def build(self):[cite: 2]
-        self.title = "HMB Nuts & Spices"[cite: 2]
-        self.cart = [][cite: 2]
-        self.search_query = ""[cite: 2]
-        self.current_view = "Shop"[cite: 2]
+    def build(self):
+        self.title = "HMB Nuts & Spices"
+        self.cart = []
+        self.search_query = ""
+        self.current_view = "Shop"
 
-        self.load_products()[cite: 2]
+        self.load_products()
 
-        self.root_layout = BoxLayout([cite: 2]
+        self.root_layout = BoxLayout(
             orientation="vertical", padding=dp(4), spacing=dp(4)
         )
-        self.root_layout.canvas.before.clear()[cite: 2]
+        self.root_layout.canvas.before.clear()
         from kivy.graphics import Color, Rectangle
 
-        with self.root_layout.canvas.before:[cite: 2]
-            Color(0.878, 0.949, 0.996, 1)  # #e0f2fe background color[cite: 2]
-            self.bg_rect = Rectangle([cite: 2]
+        with self.root_layout.canvas.before:
+            Color(0.878, 0.949, 0.996, 1)  # #e0f2fe background color
+            self.bg_rect = Rectangle(
                 size=self.root_layout.size, pos=self.root_layout.pos
             )
-        self.root_layout.bind(size=self._update_bg, pos=self._update_bg)[cite: 2]
+        self.root_layout.bind(size=self._update_bg, pos=self._update_bg)
 
-        self.content_area = BoxLayout(orientation="vertical")[cite: 2]
-        self.root_layout.add_widget(self.content_area)[cite: 2]
+        self.content_area = BoxLayout(orientation="vertical")
+        self.root_layout.add_widget(self.content_area)
 
-        self.render_shop_view()[cite: 2]
-        return self.root_layout[cite: 2]
+        self.render_shop_view()
+        return self.root_layout
 
-    def _update_bg(self, instance, value):[cite: 2]
-        self.bg_rect.size = instance.size[cite: 2]
-        self.bg_rect.pos = instance.pos[cite: 2]
+    def _update_bg(self, instance, value):
+        self.bg_rect.size = instance.size
+        self.bg_rect.pos = instance.pos
 
-    def load_products(self):[cite: 2]
-        csv_url = "https://docs.google.com/spreadsheets/d/1b_oAav63v5OVFxJBKOBbCxyW3cVcXu2J6zJCzQUxkCc/export?format=csv&gid=0"[cite: 2]
+    def load_products(self):
+        csv_url = "https://docs.google.com/spreadsheets/d/1b_oAav63v5OVFxJBKOBbCxyW3cVcXu2J6zJCzQUxkCc/export?format=csv&gid=0"
         try:
-            df = pd.read_csv(csv_url)[cite: 2]
-            self.product_records = [][cite: 2]
-            for _, row in df.iterrows():[cite: 2]
+            df = pd.read_csv(csv_url)
+            self.product_records = []
+            for _, row in df.iterrows():
                 if (
                     len(row) > 4
                     and pd.notna(row.iloc[0])
                     and str(row.iloc[0]).strip() != "id"
                 ):
-                    self.product_records.append({[cite: 2]
+                    self.product_records.append({
                         "id": str(row.iloc[0]),
                         "name": str(row.iloc[1]),
                         "category": str(row.iloc[2]).strip(),
@@ -68,7 +68,7 @@ class HMBNutsApp(App):[cite: 2]
                         ),
                     })
         except Exception:
-            self.product_records = [[cite: 2]
+            self.product_records = [
                 {
                     "id": "ITM001",
                     "name": "Premium California Almonds",
@@ -95,48 +95,48 @@ class HMBNutsApp(App):[cite: 2]
                 },
             ]
 
-    def get_cart_qty(self, prod_name):[cite: 2]
-        for item in self.cart:[cite: 2]
-            if item.get("product") == prod_name:[cite: 2]
-                q_str = str(item.get("quantity", "1 Unit")).split()[0][cite: 2]
-                return int(q_str) if q_str.isdigit() else 1[cite: 2]
-        return 0[cite: 2]
+    def get_cart_qty(self, prod_name):
+        for item in self.cart:
+            if item.get("product") == prod_name:
+                q_str = str(item.get("quantity", "1 Unit")).split()[0]
+                return int(q_str) if q_str.isdigit() else 1
+        return 0
 
-    def render_shop_view(self):[cite: 2]
-        self.content_area.clear_widgets()[cite: 2]
+    def render_shop_view(self):
+        self.content_area.clear_widgets()
 
-        search_layout = BoxLayout(size_hint_y=None, height=dp(40), spacing=dp(4))[cite: 2]
-        search_input = TextInput([cite: 2]
+        search_layout = BoxLayout(size_hint_y=None, height=dp(40), spacing=dp(4))
+        search_input = TextInput(
             text=self.search_query,
             hint_text="🔍 Search dry fruits, nuts, seeds...",
             multiline=False,
             size_hint_x=0.8,
         )
-        search_input.bind(text=lambda ins, val: setattr(self, "search_query", val))[cite: 2]
+        search_input.bind(text=lambda ins, val: setattr(self, "search_query", val))
 
-        clear_btn = Button([cite: 2]
+        clear_btn = Button(
             text="Clear",
             size_hint_x=0.2,
             background_color=(0.988, 0.905, 0.952, 1),
             color=(0.858, 0.152, 0.466, 1),
         )
-        clear_btn.bind([cite: 2]
+        clear_btn.bind(
             on_press=lambda x: (
                 setattr(self, "search_query", ""),
                 self.render_shop_view(),
             )
         )
 
-        search_layout.add_widget(search_input)[cite: 2]
-        search_layout.add_widget(clear_btn)[cite: 2]
-        self.content_area.add_widget(search_layout)[cite: 2]
+        search_layout.add_widget(search_input)
+        search_layout.add_widget(clear_btn)
+        self.content_area.add_widget(search_layout)
 
-        scroll = ScrollView()[cite: 2]
-        grid = GridLayout(cols=2, spacing=dp(6), size_hint_y=None)[cite: 2]
-        grid.bind(minimum_height=grid.setter("height"))[cite: 2]
+        scroll = ScrollView()
+        grid = GridLayout(cols=2, spacing=dp(6), size_hint_y=None)
+        grid.bind(minimum_height=grid.setter("height"))
 
-        q = self.search_query.strip().lower()[cite: 2]
-        filtered = ([cite: 2]
+        q = self.search_query.strip().lower()
+        filtered = (
             [
                 p
                 for p in self.product_records
@@ -146,14 +146,14 @@ class HMBNutsApp(App):[cite: 2]
             else self.product_records
         )
 
-        for prod in filtered:[cite: 2]
-            card = BoxLayout([cite: 2]
+        for prod in filtered:
+            card = BoxLayout(
                 orientation="vertical",
                 size_hint_y=None,
                 height=dp(170),
                 padding=dp(4),
             )
-            card.add_widget([cite: 2]
+            card.add_widget(
                 Label(
                     text="10 MINS",
                     font_size=dp(9),
@@ -162,7 +162,7 @@ class HMBNutsApp(App):[cite: 2]
                     height=dp(14),
                 )
             )
-            card.add_widget([cite: 2]
+            card.add_widget(
                 Label(
                     text=prod["name"],
                     font_size=dp(11),
@@ -172,7 +172,7 @@ class HMBNutsApp(App):[cite: 2]
                     height=dp(26),
                 )
             )
-            card.add_widget([cite: 2]
+            card.add_widget(
                 Label(
                     text=prod["description"],
                     font_size=dp(9),
@@ -181,7 +181,7 @@ class HMBNutsApp(App):[cite: 2]
                     height=dp(14),
                 )
             )
-            card.add_widget([cite: 2]
+            card.add_widget(
                 Label(
                     text="10% OFF",
                     font_size=dp(9),
@@ -192,7 +192,7 @@ class HMBNutsApp(App):[cite: 2]
                 )
             )
 
-            base_price = float([cite: 2]
+            base_price = float(
                 "".join([
                     c
                     for c in str(prod["price"])
@@ -200,7 +200,7 @@ class HMBNutsApp(App):[cite: 2]
                 ])
                 or 0
             )
-            card.add_widget([cite: 2]
+            card.add_widget(
                 Label(
                     text=f"₹{int(base_price)}",
                     font_size=dp(12),
@@ -211,100 +211,100 @@ class HMBNutsApp(App):[cite: 2]
                 )
             )
 
-            qty_layout = BoxLayout(size_hint_y=None, height=dp(28), spacing=dp(4))[cite: 2]
-            minus_btn = Button([cite: 2]
+            qty_layout = BoxLayout(size_hint_y=None, height=dp(28), spacing=dp(4))
+            minus_btn = Button(
                 text="-",
                 background_color=(0.988, 0.905, 0.952, 1),
                 color=(0.858, 0.152, 0.466, 1),
             )
-            minus_btn.product_name = prod["name"][cite: 2]
-            minus_btn.bind(on_press=self.decrement_cart)[cite: 2]
+            minus_btn.product_name = prod["name"]
+            minus_btn.bind(on_press=self.decrement_cart)
 
-            current_qty = self.get_cart_qty(prod["name"])[cite: 2]
-            qty_label = Label([cite: 2]
+            current_qty = self.get_cart_qty(prod["name"])
+            qty_label = Label(
                 text=str(current_qty),
                 font_size=dp(12),
                 bold=True,
                 color=(0.858, 0.152, 0.466, 1),
             )
 
-            plus_btn = Button([cite: 2]
+            plus_btn = Button(
                 text="+",
                 background_color=(0.988, 0.905, 0.952, 1),
                 color=(0.858, 0.152, 0.466, 1),
             )
-            plus_btn.product_name = prod["name"][cite: 2]
-            plus_btn.bind(on_press=self.increment_cart)[cite: 2]
+            plus_btn.product_name = prod["name"]
+            plus_btn.bind(on_press=self.increment_cart)
 
-            qty_layout.add_widget(minus_btn)[cite: 2]
-            qty_layout.add_widget(qty_label)[cite: 2]
-            qty_layout.add_widget(plus_btn)[cite: 2]
-            card.add_widget(qty_layout)[cite: 2]
-            grid.add_widget(card)[cite: 2]
+            qty_layout.add_widget(minus_btn)
+            qty_layout.add_widget(qty_label)
+            qty_layout.add_widget(plus_btn)
+            card.add_widget(qty_layout)
+            grid.add_widget(card)
 
-        scroll.add_widget(grid)[cite: 2]
-        self.content_area.add_widget(scroll)[cite: 2]
+        scroll.add_widget(grid)
+        self.content_area.add_widget(scroll)
 
-        if len(self.cart) > 0:[cite: 2]
-            total_qty = sum([[cite: 2]
+        if len(self.cart) > 0:
+            total_qty = sum([
                 int(str(i.get("quantity", "1")).split()[0]) for i in self.cart
             ])
-            bottom_bar = BoxLayout([cite: 2]
+            bottom_bar = BoxLayout(
                 size_hint_y=None, height=dp(50), padding=dp(8), spacing=dp(10)
             )
-            view_cart_btn = Button([cite: 2]
+            view_cart_btn = Button(
                 text="View Cart 🛒",
                 size_hint_x=0.4,
                 background_color=(0.145, 0.388, 0.921, 1),
                 color=(1, 1, 1, 1),
             )
-            view_cart_btn.bind(on_press=lambda x: self.render_cart_view())[cite: 2]
-            info_label = Label([cite: 2]
+            view_cart_btn.bind(on_press=lambda x: self.render_cart_view())
+            info_label = Label(
                 text=f"{total_qty} Item(s) in Cart\nReady to Checkout",
                 font_size=dp(10),
                 color=(0.06, 0.09, 0.16, 1),
             )
-            bottom_bar.add_widget(view_cart_btn)[cite: 2]
-            bottom_bar.add_widget(info_label)[cite: 2]
-            self.content_area.add_widget(bottom_bar)[cite: 2]
+            bottom_bar.add_widget(view_cart_btn)
+            bottom_bar.add_widget(info_label)
+            self.content_area.add_widget(bottom_bar)
 
-    def increment_cart(self, instance):[cite: 2]
-        p_name = instance.product_name[cite: 2]
-        found = False[cite: 2]
-        for item in self.cart:[cite: 2]
-            if item.get("product") == p_name:[cite: 2]
-                q_val = int(str(item.get("quantity", "1")).split()[0])[cite: 2]
-                item["quantity"] = f"{q_val + 1} Unit"[cite: 2]
-                found = True[cite: 2]
+    def increment_cart(self, instance):
+        p_name = instance.product_name
+        found = False
+        for item in self.cart:
+            if item.get("product") == p_name:
+                q_val = int(str(item.get("quantity", "1")).split()[0])
+                item["quantity"] = f"{q_val + 1} Unit"
+                found = True
                 break
-        if not found:[cite: 2]
-            self.cart.append({"product": p_name, "quantity": "1 Unit"})[cite: 2]
-        self.render_shop_view()[cite: 2]
+        if not found:
+            self.cart.append({"product": p_name, "quantity": "1 Unit"})
+        self.render_shop_view()
 
-    def decrement_cart(self, instance):[cite: 2]
-        p_name = instance.product_name[cite: 2]
-        for idx, item in enumerate(self.cart):[cite: 2]
-            if item.get("product") == p_name:[cite: 2]
-                q_val = int(str(item.get("quantity", "1")).split()[0])[cite: 2]
-                if q_val > 1:[cite: 2]
-                    item["quantity"] = f"{q_val - 1} Unit"[cite: 2]
+    def decrement_cart(self, instance):
+        p_name = instance.product_name
+        for idx, item in enumerate(self.cart):
+            if item.get("product") == p_name:
+                q_val = int(str(item.get("quantity", "1")).split()[0])
+                if q_val > 1:
+                    item["quantity"] = f"{q_val - 1} Unit"
                 else:
-                    self.cart.pop(idx)[cite: 2]
+                    self.cart.pop(idx)
                 break
-        self.render_shop_view()[cite: 2]
+        self.render_shop_view()
 
-    def render_cart_view(self):[cite: 2]
-        self.content_area.clear_widgets()[cite: 2]
-        scroll = ScrollView()[cite: 2]
-        layout = BoxLayout([cite: 2]
+    def render_cart_view(self):
+        self.content_area.clear_widgets()
+        scroll = ScrollView()
+        layout = BoxLayout(
             orientation="vertical",
             size_hint_y=None,
             padding=dp(10),
             spacing=dp(10),
         )
-        layout.bind(minimum_height=layout.setter("height"))[cite: 2]
+        layout.bind(minimum_height=layout.setter("height"))
 
-        layout.add_widget([cite: 2]
+        layout.add_widget(
             Label(
                 text="Your Shopping Cart & Checkout",
                 font_size=dp(16),
@@ -315,8 +315,8 @@ class HMBNutsApp(App):[cite: 2]
             )
         )
 
-        if not self.cart:[cite: 2]
-            layout.add_widget([cite: 2]
+        if not self.cart:
+            layout.add_widget(
                 Label(
                     text="Your cart is empty.",
                     size_hint_y=None,
@@ -325,31 +325,31 @@ class HMBNutsApp(App):[cite: 2]
                 )
             )
         else:
-            for idx, item in enumerate(self.cart):[cite: 2]
-                row = BoxLayout(size_hint_y=None, height=dp(35), spacing=dp(10))[cite: 2]
-                row.add_widget([cite: 2]
+            for idx, item in enumerate(self.cart):
+                row = BoxLayout(size_hint_y=None, height=dp(35), spacing=dp(10))
+                row.add_widget(
                     Label(
                         text=f"{item.get('product')} ({item.get('quantity')})",
                         color=(0.06, 0.09, 0.16, 1),
                     )
                 )
-                rem_btn = Button([cite: 2]
+                rem_btn = Button(
                     text="Remove",
                     size_hint_x=0.3,
                     background_color=(0.988, 0.905, 0.952, 1),
                     color=(0.858, 0.152, 0.466, 1),
                 )
-                rem_btn.idx = idx[cite: 2]
-                rem_btn.bind([cite: 2]
+                rem_btn.idx = idx
+                rem_btn.bind(
                     on_press=lambda ins: (
                         self.cart.pop(ins.idx),
                         self.render_cart_view(),
                     )
                 )
-                row.add_widget(rem_btn)[cite: 2]
-                layout.add_widget(row)[cite: 2]
+                row.add_widget(rem_btn)
+                layout.add_widget(row)
 
-            layout.add_widget([cite: 2]
+            layout.add_widget(
                 Label(
                     text="Secure Checkout Form",
                     font_size=dp(14),
@@ -359,59 +359,59 @@ class HMBNutsApp(App):[cite: 2]
                     color=(0.06, 0.09, 0.16, 1),
                 )
             )
-            self.address_input = TextInput([cite: 2]
+            self.address_input = TextInput(
                 hint_text="Delivery Address:",
                 size_hint_y=None,
                 height=dp(70),
             )
-            self.contact_input = TextInput([cite: 2]
+            self.contact_input = TextInput(
                 hint_text="Alternative Contact Number:",
                 size_hint_y=None,
                 height=dp(40),
                 multiline=False,
             )
-            layout.add_widget(self.address_input)[cite: 2]
-            layout.add_widget(self.contact_input)[cite: 2]
+            layout.add_widget(self.address_input)
+            layout.add_widget(self.contact_input)
 
-            checkout_btn = Button([cite: 2]
+            checkout_btn = Button(
                 text="Complete Order",
                 size_hint_y=None,
                 height=dp(40),
                 background_color=(0.137, 0.772, 0.368, 1),
                 color=(1, 1, 1, 1),
             )
-            checkout_btn.bind(on_press=self.complete_order)[cite: 2]
-            layout.add_widget(checkout_btn)[cite: 2]
+            checkout_btn.bind(on_press=self.complete_order)
+            layout.add_widget(checkout_btn)
 
-        back_btn = Button([cite: 2]
+        back_btn = Button(
             text="Return to Shop",
             size_hint_y=None,
             height=dp(40),
             background_color=(0.145, 0.388, 0.921, 1),
             color=(1, 1, 1, 1),
         )
-        back_btn.bind(on_press=lambda x: self.render_shop_view())[cite: 2]
-        layout.add_widget(back_btn)[cite: 2]
+        back_btn.bind(on_press=lambda x: self.render_shop_view())
+        layout.add_widget(back_btn)
 
-        scroll.add_widget(layout)[cite: 2]
-        self.content_area.add_widget(scroll)[cite: 2]
+        scroll.add_widget(layout)
+        self.content_area.add_widget(scroll)
 
-    def complete_order(self, instance):[cite: 2]
-        addr = self.address_input.text.strip()[cite: 2]
-        contact = self.contact_input.text.strip()[cite: 2]
-        if addr and contact:[cite: 2]
-            cart_summary = ", ".join([[cite: 2]
+    def complete_order(self, instance):
+        addr = self.address_input.text.strip()
+        contact = self.contact_input.text.strip()
+        if addr and contact:
+            cart_summary = ", ".join([
                 f"{i.get('quantity')} of {i.get('product')}" for i in self.cart
             ])
-            wa_message = f"*New Order - HMB Nuts & Seeds*\n\n*Items:* {cart_summary}\n*Address:* {addr}\n*Contact:* {contact}"[cite: 2]
-            encoded_message = urllib.parse.quote(wa_message)[cite: 2]
-            wa_link = f"https://api.whatsapp.com/send?phone=919840450113&text={encoded_message}"[cite: 2]
+            wa_message = f"*New Order - HMB Nuts & Seeds*\n\n*Items:* {cart_summary}\n*Address:* {addr}\n*Contact:* {contact}"
+            encoded_message = urllib.parse.quote(wa_message)
+            wa_link = f"https://api.whatsapp.com/send?phone=919840450113&text={encoded_message}"
             import webbrowser
 
-            webbrowser.open(wa_link)[cite: 2]
-            self.cart = [][cite: 2]
-            self.render_shop_view()[cite: 2]
+            webbrowser.open(wa_link)
+            self.cart = []
+            self.render_shop_view()
 
 
-if __name__ == "__main__":[cite: 2]
-    HMBNutsApp().run()[cite: 2]
+if __name__ == "__main__":
+    HMBNutsApp().run()
