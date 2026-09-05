@@ -1,35 +1,19 @@
 [app]
-
-title = HMB Nuts & Spices
-
-package.name = hmbnuts
-
-package.domain = org.hmb
-
-source.dir = .
-
-source.include_exts = py,png,jpg,kv,atlas,csv
-
-version = 1.0
-
-requirements = python3,kivy
-
-orientation = portrait
-
-android.permissions = INTERNET
-
-android.api = 31
-
-android.minapi = 21
-
-android.ndk = 28c
-
-android.accept_sdk_license = True
-
-android.archs = arm64-v8a
-
+title = HMB Nuts & Spices[cite: 1]
+package.name = hmbnuts[cite: 1]
+package.domain = org.hmb[cite: 1]
+source.dir = .[cite: 1]
+source.include_exts = py,png,jpg,kv,atlas,csv[cite: 1]
+version = 1.0[cite: 1]
+requirements = python3,kivy,requests,urllib3,certifi,idna,charset_normalizer[cite: 1]
+orientation = portrait[cite: 1]
+android.permissions = INTERNET[cite: 1]
+android.api = 31[cite: 1]
+android.minapi = 21[cite: 1]
+android.ndk_version = 25b[cite: 1]
+android.python_version = 3.11[cite: 1]
+android.accept_sdk_license = True[cite: 1]
 
 [buildozer]
-
-log_level = 2
-warn_root = 1
+log_level = 2[cite: 1]
+warn_root = 1[cite: 1]
