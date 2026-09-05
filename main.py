@@ -6,8 +6,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
+import csv
 import os
-import pandas as pd
+import urllib.request
 import urllib.parse
 
 
@@ -47,23 +48,25 @@ class HMBNutsApp(App):
     def load_products(self):
         csv_url = "https://docs.google.com/spreadsheets/d/1b_oAav63v5OVFxJBKOBbCxyW3cVcXu2J6zJCzQUxkCc/export?format=csv&gid=0"
         try:
-            df = pd.read_csv(csv_url)
+            response = urllib.request.urlopen(csv_url)
+            lines = [line.decode("utf-8") for line in response.readlines()]
+            reader = csv.reader(lines)
             self.product_records = []
-            for _, row in df.iterrows():
+            for row in reader:
                 if (
                     len(row) > 4
-                    and pd.notna(row.iloc[0])
-                    and str(row.iloc[0]).strip() != "id"
+                    and row[0].strip() != ""
+                    and row[0].strip().lower() != "id"
                 ):
                     self.product_records.append({
-                        "id": str(row.iloc[0]),
-                        "name": str(row.iloc[1]),
-                        "category": str(row.iloc[2]).strip(),
-                        "stock": str(row.iloc[3]),
-                        "price": str(row.iloc[4]),
+                        "id": str(row[0]),
+                        "name": str(row[1]),
+                        "category": str(row[2]).strip(),
+                        "stock": str(row[3]),
+                        "price": str(row[4]),
                         "description": (
-                            str(row.iloc[5])
-                            if len(row) > 5 and pd.notna(row.iloc[5])
+                            str(row[5])
+                            if len(row) > 5 and row[5].strip() != ""
                             else "1 Pack"
                         ),
                     })
