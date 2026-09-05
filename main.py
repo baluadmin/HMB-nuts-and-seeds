@@ -6,19 +6,19 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
-import csv
-import os
 import urllib.request
+import csv
+import codecs
 import urllib.parse
 
 
 class HMBNutsApp(App):
 
     def build(self):
-        self.title = "HMB Nuts & Spices"
+        self.title = "HMB Nuts & Spices"[cite: 2]
         self.cart = []
         self.search_query = ""
-        self.current_view = "Shop"
+        self.current_view = "Shop"[cite: 2]
 
         self.load_products()
 
@@ -29,7 +29,7 @@ class HMBNutsApp(App):
         from kivy.graphics import Color, Rectangle
 
         with self.root_layout.canvas.before:
-            Color(0.878, 0.949, 0.996, 1)  # #e0f2fe background color
+            Color(0.878, 0.949, 0.996, 1)
             self.bg_rect = Rectangle(
                 size=self.root_layout.size, pos=self.root_layout.pos
             )
@@ -46,28 +46,29 @@ class HMBNutsApp(App):
         self.bg_rect.pos = instance.pos
 
     def load_products(self):
-        csv_url = "https://docs.google.com/spreadsheets/d/1b_oAav63v5OVFxJBKOBbCxyW3cVcXu2J6zJCzQUxkCc/export?format=csv&gid=0"
+        csv_url = "https://docs.google.com/spreadsheets/d/1b_oAav63v5OVFxJBKOBbCxyW3cVcXu2J6zJCzQUxkCc/export?format=csv&gid=0"[cite: 2]
         try:
             response = urllib.request.urlopen(csv_url)
-            lines = [line.decode("utf-8") for line in response.readlines()]
+            lines = [
+                line.decode("utf-8")
+                for line in codecs.iterdecode(response, "utf-8")
+            ]
             reader = csv.reader(lines)
             self.product_records = []
             for row in reader:
                 if (
                     len(row) > 4
-                    and row[0].strip() != ""
-                    and row[0].strip().lower() != "id"
+                    and row[0].strip()
+                    and row[0].strip() != "id"
                 ):
                     self.product_records.append({
-                        "id": str(row[0]),
-                        "name": str(row[1]),
-                        "category": str(row[2]).strip(),
-                        "stock": str(row[3]),
-                        "price": str(row[4]),
+                        "id": row[0].strip(),
+                        "name": row[1].strip(),
+                        "category": row[2].strip(),
+                        "stock": row[3].strip(),
+                        "price": row[4].strip(),
                         "description": (
-                            str(row[5])
-                            if len(row) > 5 and row[5].strip() != ""
-                            else "1 Pack"
+                            row[5].strip() if len(row) > 5 and row[5].strip() else "1 Pack"[cite: 2]
                         ),
                     })
         except Exception:
@@ -96,7 +97,7 @@ class HMBNutsApp(App):
                     "category": "Seeds",
                     "description": "250g",
                 },
-            ]
+            ][cite: 2]
 
     def get_cart_qty(self, prod_name):
         for item in self.cart:
@@ -111,7 +112,7 @@ class HMBNutsApp(App):
         search_layout = BoxLayout(size_hint_y=None, height=dp(40), spacing=dp(4))
         search_input = TextInput(
             text=self.search_query,
-            hint_text="🔍 Search dry fruits, nuts, seeds...",
+            hint_text="🔍 Search dry fruits, nuts, seeds...",[cite: 2]
             multiline=False,
             size_hint_x=0.8,
         )
@@ -406,9 +407,9 @@ class HMBNutsApp(App):
             cart_summary = ", ".join([
                 f"{i.get('quantity')} of {i.get('product')}" for i in self.cart
             ])
-            wa_message = f"*New Order - HMB Nuts & Seeds*\n\n*Items:* {cart_summary}\n*Address:* {addr}\n*Contact:* {contact}"
+            wa_message = f"*New Order - HMB Nuts & Seeds*\n\n*Items:* {cart_summary}\n*Address:* {addr}\n*Contact:* {contact}"[cite: 2]
             encoded_message = urllib.parse.quote(wa_message)
-            wa_link = f"https://api.whatsapp.com/send?phone=919840450113&text={encoded_message}"
+            wa_link = f"https://api.whatsapp.com/send?phone=919840450113&text={encoded_message}"[cite: 2]
             import webbrowser
 
             webbrowser.open(wa_link)
@@ -417,4 +418,4 @@ class HMBNutsApp(App):
 
 
 if __name__ == "__main__":
-    HMBNutsApp().run()
+    HMBNutsApp().run()[cite: 2]
