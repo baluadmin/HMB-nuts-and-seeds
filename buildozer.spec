@@ -11,7 +11,7 @@ android.permissions = INTERNET
 android.api = 31
 android.minapi = 21
 
-# (str) Use a stable, compatible Android NDK version
+# Force stable NDK version to prevent compilation crash
 android.ndk_version = 25b
 
 android.accept_sdk_license = True
