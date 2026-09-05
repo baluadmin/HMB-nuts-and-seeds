@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "HMMobilesAndroid/HMMobilesAndroid/**"
+      - "HMB NutsAndroid/HMB NutsAndroid/**"
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: HMMobilesAndroid/HMMobilesAndroid
+        working-directory: HMB NutsAndroid/HMB NutsAndroid
 
     steps:
       - name: Checkout repository
@@ -50,5 +50,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: HM-Mobiles-debug-APK
-          path: HMMobilesAndroid/HMMobilesAndroid/app/build/outputs/apk/debug/app-debug.apk
+          path: HMB NutsAndroid/HMB NutsAndroid/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
